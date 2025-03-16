@@ -31,7 +31,7 @@ const NavBar = () => {
       <div className="container mx-auto flex justify-between items-center px-4">
         <div className="flex items-center">
           <img 
-            src={import.meta.env.BASE_URL + "images/Blaze_and_the_Monster_Machines_logo.png"}
+            src="/images/Blaze_and_the_Monster_Machines_logo.png"
             alt="Blaze and the Monster Machines" 
             className="h-10"
           />

@@ -22,7 +22,7 @@ const Hero = () => {
       {/* Background image with overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src={import.meta.env.BASE_URL + "images/82f46f64-4755-4cd4-a279-42457b2ca09a.png"}
+          src="/images/82f46f64-4755-4cd4-a279-42457b2ca09a.png"
           alt="Blaze and the Monster Machines" 
           className="w-full h-full object-cover"
         />
@@ -104,7 +104,7 @@ const Hero = () => {
               
               <div className="absolute top-4 -left-6 z-30 transform -rotate-3">
                 <img 
-                  src={import.meta.env.BASE_URL + "images/AJ-blaze.png"}
+                  src="/images/AJ-blaze.png"
                   alt="AJ do Blaze" 
                   className="w-24 h-auto object-contain"
                 />
@@ -112,7 +112,7 @@ const Hero = () => {
               
               <div className="absolute -right-4 -bottom-4 w-20 h-20 z-30">
                 <img 
-                  src={import.meta.env.BASE_URL + "images/roda-blaze.png"}
+                  src="/images/roda-blaze.png"
                   alt="Roda do Blaze" 
                   className="w-full h-full object-contain"
                 />
@@ -128,7 +128,7 @@ const Hero = () => {
             
             <div className="absolute -right-12 -bottom-12 w-28 h-28 z-30">
               <img 
-                src={import.meta.env.BASE_URL + "images/roda-blaze.png"}
+                src="/images/roda-blaze.png"
                 alt="Roda do Blaze" 
                 className="w-full h-full object-contain"
               />
@@ -155,7 +155,7 @@ const Hero = () => {
               {/* Hugo's photo below */}
               <div className="absolute top-12 -left-24 z-30 transform -rotate-3">
                 <img 
-                  src={import.meta.env.BASE_URL + "images/AJ-blaze.png"}
+                  src="/images/AJ-blaze.png"
                   alt="AJ do Blaze" 
                   className="w-32 h-auto object-contain"
                 />
