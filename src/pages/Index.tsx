@@ -104,7 +104,7 @@ const Index = () => {
                   <div className="w-full md:w-1/3">
                     <div className="aspect-square rounded-lg overflow-hidden border-4 border-white shadow-xl bg-gray-100">
                       <img 
-                        src="/images/Hugo.jpg" 
+                        src={import.meta.env.BASE_URL + "images/Hugo.jpg"}
                         alt="Foto do Hugo" 
                         className="w-full h-full object-cover"
                       />
