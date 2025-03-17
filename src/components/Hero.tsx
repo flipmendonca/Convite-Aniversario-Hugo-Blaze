@@ -181,7 +181,7 @@ const Hero = () => {
       
       <div className="absolute bottom-4 left-0 right-0 flex justify-center animate-bounce">
         <a 
-          href="#location" 
+          href="#photo-memory" 
           className="rounded-full bg-white/80 p-3 shadow-md backdrop-blur-sm"
         >
           <ChevronDown className="h-5 w-5 text-blaze-red" />

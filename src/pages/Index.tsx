@@ -33,7 +33,7 @@ const Index = () => {
         <div className="h-16 bg-gradient-to-r from-blaze-blue/20 via-blaze-yellow/20 to-blaze-red/20 transform skew-y-2"></div>
         
         {/* Photo memory section for Hugo */}
-        <section className="py-16 bg-white">
+        <section id="photo-memory" className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto">
               <div className="glass-card rounded-lg p-8 shadow-lg">
