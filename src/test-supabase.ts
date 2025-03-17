@@ -60,22 +60,13 @@ async function runTests() {
   }
 }
 
-// Exportar as funções para uso no console do navegador
-window.testSupabase = {
-  testConnection: testSupabaseConnection,
-  testAddRsvp: testAddRsvp,
-  runAllTests: runTests
-};
-
-// Adicionar tipos ao objeto window
-declare global {
-  interface Window {
-    testSupabase: {
-      testConnection: () => Promise<boolean>;
-      testAddRsvp: () => Promise<boolean>;
-      runAllTests: () => Promise<void>;
-    };
-  }
+// Adicionar as funções ao objeto window apenas no navegador
+if (typeof window !== 'undefined') {
+  (window as any).testSupabase = {
+    testConnection: testSupabaseConnection,
+    testAddRsvp: testAddRsvp,
+    runAllTests: runTests
+  };
 }
 
 export { testSupabaseConnection, testAddRsvp, runTests }; 
