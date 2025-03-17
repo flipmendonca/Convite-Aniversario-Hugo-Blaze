@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MessageCircle, Send, Image } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import PhotoUpload from './PhotoUpload';
-import { messageService, MessageData } from '@/lib/services';
+import { messageService, MessageData } from '@/lib/supabase-services';
 
 // Sample initial messages
 const initialMessages = [
@@ -80,7 +80,7 @@ const MessageWall = () => {
     setIsSubmitting(true);
     
     try {
-      // Enviar mensagem para o Firebase
+      // Enviar mensagem para o Supabase
       await messageService.addMessage(newMessage);
       
       // Atualizar a lista de mensagens
@@ -201,8 +201,8 @@ const MessageWall = () => {
                 </div>
               ) : (
                 <div className="space-y-6">
-                  {messages.map(msg => (
-                    <div key={msg.timestamp?.getTime()} className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
+                  {messages.map((msg, index) => (
+                    <div key={index} className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="font-bold text-blaze-dark">{msg.author}</h4>
                         <span className="text-xs text-gray-500">

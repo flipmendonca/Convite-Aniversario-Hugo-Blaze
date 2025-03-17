@@ -75,51 +75,43 @@ npm run preview
    render blueprint apply
    ```
 
-## Configuração do Firebase
+## Configuração do Supabase
 
-Este projeto utiliza o Firebase para armazenar as confirmações de presença e as mensagens do mural. Para configurar o Firebase:
+Este projeto utiliza o Supabase para armazenar as confirmações de presença e as mensagens do mural. Para configurar o Supabase:
 
-1. Crie uma conta no [Firebase](https://firebase.google.com) se ainda não tiver
-2. Crie um novo projeto no Firebase
-3. Adicione um aplicativo Web ao seu projeto
-4. Copie as credenciais do Firebase
-5. Crie um arquivo `.env` na raiz do projeto com base no arquivo `.env.example`
-6. Preencha as variáveis de ambiente com suas credenciais do Firebase
-7. No console do Firebase, ative o Firestore Database e o Storage
-8. Configure as regras de segurança do Firestore e do Storage para permitir leitura e escrita
-9. Opcionalmente, ative o Firebase Analytics para acompanhar o uso do site
+1. Crie uma conta no [Supabase](https://supabase.com) se ainda não tiver
+2. Crie um novo projeto no Supabase
+3. Copie as credenciais do Supabase (URL e chave anônima)
+4. Crie um arquivo `.env` na raiz do projeto com base no arquivo `.env.example`
+5. Preencha as variáveis de ambiente com suas credenciais do Supabase
+6. No console do Supabase, crie as seguintes tabelas:
 
-Exemplo de regras para o Firestore:
-```
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write;
-    }
-  }
-}
+### Tabela `rsvps`
+
+```sql
+CREATE TABLE rsvps (
+  id SERIAL PRIMARY KEY,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  name TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  number_of_guests INTEGER NOT NULL,
+  message TEXT
+);
 ```
 
-Exemplo de regras para o Storage:
+### Tabela `messages`
+
+```sql
+CREATE TABLE messages (
+  id SERIAL PRIMARY KEY,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  author TEXT NOT NULL,
+  message TEXT NOT NULL,
+  image_url TEXT
+);
 ```
-rules_version = '2';
-service firebase.storage {
-  match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read, write;
-    }
-  }
-}
-```
 
-## Firebase Analytics
-
-O projeto está configurado para usar o Firebase Analytics, que permite acompanhar o uso do site. Para ativar o Analytics:
-
-1. No console do Firebase, vá para "Analytics" no menu lateral
-2. Siga as instruções para ativar o Analytics
-3. As métricas começarão a ser coletadas automaticamente
+7. No console do Supabase, crie um bucket de armazenamento chamado `images` com acesso público
 
 ## Solução de Problemas
 
@@ -128,6 +120,7 @@ Se encontrar problemas com imagens ou recursos não carregando:
 1. Verifique se as imagens estão na pasta `public/images/`
 2. Certifique-se de que o script de build está copiando as imagens corretamente
 3. Para problemas específicos com o Vercel, tente usar o script personalizado `vercel-build.sh`
+4. Para problemas com o upload de imagens no Supabase, verifique se o bucket `images` está configurado corretamente
 
 ## Estrutura do Projeto
 
@@ -151,7 +144,7 @@ Se encontrar problemas com imagens ou recursos não carregando:
 - Formulário de confirmação de presença
 - Mural de mensagens com upload de fotos
 - Mapa de localização integrado
-- Analytics para acompanhar o uso do site
+- Integração com Supabase para armazenamento de dados
 
 ## Tecnologias Utilizadas
 
@@ -159,7 +152,7 @@ Se encontrar problemas com imagens ou recursos não carregando:
 - TypeScript
 - Tailwind CSS
 - Vite
-- Firebase (Firestore, Storage, Analytics)
+- Supabase (Banco de dados e armazenamento)
 
 ## Licença
 

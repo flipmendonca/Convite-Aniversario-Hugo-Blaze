@@ -24,5 +24,9 @@
         }
       ]
     }
-  ]
+  ],
+  "env": {
+    "VITE_SUPABASE_URL": "https://oxtxmytcphwvtlzctjxm.supabase.co",
+    "VITE_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94dHhteXRjcGh3dnRsemN0anhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIxNzEwNjQsImV4cCI6MjA1Nzc0NzA2NH0.UFMAwDJh2Infa9YvI51G_0YO_f7reBU0ZW7E_4--MwU"
+  }
 } 
