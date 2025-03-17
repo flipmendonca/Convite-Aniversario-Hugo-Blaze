@@ -75,6 +75,52 @@ npm run preview
    render blueprint apply
    ```
 
+## Configuração do Firebase
+
+Este projeto utiliza o Firebase para armazenar as confirmações de presença e as mensagens do mural. Para configurar o Firebase:
+
+1. Crie uma conta no [Firebase](https://firebase.google.com) se ainda não tiver
+2. Crie um novo projeto no Firebase
+3. Adicione um aplicativo Web ao seu projeto
+4. Copie as credenciais do Firebase
+5. Crie um arquivo `.env` na raiz do projeto com base no arquivo `.env.example`
+6. Preencha as variáveis de ambiente com suas credenciais do Firebase
+7. No console do Firebase, ative o Firestore Database e o Storage
+8. Configure as regras de segurança do Firestore e do Storage para permitir leitura e escrita
+9. Opcionalmente, ative o Firebase Analytics para acompanhar o uso do site
+
+Exemplo de regras para o Firestore:
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write;
+    }
+  }
+}
+```
+
+Exemplo de regras para o Storage:
+```
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write;
+    }
+  }
+}
+```
+
+## Firebase Analytics
+
+O projeto está configurado para usar o Firebase Analytics, que permite acompanhar o uso do site. Para ativar o Analytics:
+
+1. No console do Firebase, vá para "Analytics" no menu lateral
+2. Siga as instruções para ativar o Analytics
+3. As métricas começarão a ser coletadas automaticamente
+
 ## Solução de Problemas
 
 Se encontrar problemas com imagens ou recursos não carregando:
@@ -105,6 +151,7 @@ Se encontrar problemas com imagens ou recursos não carregando:
 - Formulário de confirmação de presença
 - Mural de mensagens com upload de fotos
 - Mapa de localização integrado
+- Analytics para acompanhar o uso do site
 
 ## Tecnologias Utilizadas
 
@@ -112,6 +159,7 @@ Se encontrar problemas com imagens ou recursos não carregando:
 - TypeScript
 - Tailwind CSS
 - Vite
+- Firebase (Firestore, Storage, Analytics)
 
 ## Licença
 

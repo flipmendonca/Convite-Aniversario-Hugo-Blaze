@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MessageCircle, Send, Image } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import PhotoUpload from './PhotoUpload';
+import { messageService, MessageData } from '@/lib/services';
 
 // Sample initial messages
 const initialMessages = [
@@ -24,13 +25,36 @@ const initialMessages = [
 
 const MessageWall = () => {
   const { toast } = useToast();
-  const [messages, setMessages] = useState(initialMessages);
-  const [newMessage, setNewMessage] = useState({
+  const [messages, setMessages] = useState<MessageData[]>([]);
+  const [newMessage, setNewMessage] = useState<MessageData>({
     author: '',
     message: '',
-    imageSrc: null as string | null,
+    imageSrc: null,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Carregar mensagens ao montar o componente
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        setIsLoading(true);
+        const fetchedMessages = await messageService.getMessages();
+        setMessages(fetchedMessages);
+      } catch (error) {
+        console.error('Erro ao carregar mensagens:', error);
+        toast({
+          title: "Erro ao carregar mensagens",
+          description: "Não foi possível carregar as mensagens. Tente novamente mais tarde.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchMessages();
+  }, [toast]);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -41,7 +65,7 @@ const MessageWall = () => {
     setNewMessage(prev => ({ ...prev, imageSrc: imageDataUrl }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!newMessage.author.trim() || !newMessage.message.trim()) {
@@ -55,18 +79,15 @@ const MessageWall = () => {
     
     setIsSubmitting(true);
     
-    // Simulate API call delay
-    setTimeout(() => {
-      const newMsg = {
-        id: Date.now(),
-        author: newMessage.author,
-        message: newMessage.message,
-        timestamp: new Date(),
-        hasImage: !!newMessage.imageSrc,
-        imageSrc: newMessage.imageSrc,
-      };
+    try {
+      // Enviar mensagem para o Firebase
+      await messageService.addMessage(newMessage);
       
-      setMessages(prev => [newMsg, ...prev]);
+      // Atualizar a lista de mensagens
+      const updatedMessages = await messageService.getMessages();
+      setMessages(updatedMessages);
+      
+      // Limpar formulário
       setNewMessage({ author: '', message: '', imageSrc: null });
       setIsSubmitting(false);
       
@@ -74,7 +95,16 @@ const MessageWall = () => {
         title: "Mensagem enviada!",
         description: "Sua mensagem foi adicionada ao mural com sucesso!",
       });
-    }, 1000);
+    } catch (error) {
+      console.error('Erro ao enviar mensagem:', error);
+      setIsSubmitting(false);
+      
+      toast({
+        title: "Erro ao enviar",
+        description: "Ocorreu um erro ao enviar sua mensagem. Tente novamente.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -159,35 +189,47 @@ const MessageWall = () => {
             <div className="glass-card rounded-lg p-6 shadow-lg h-full overflow-y-auto max-h-[600px]">
               <h3 className="text-xl font-bold mb-6 text-blaze-dark">Mensagens recebidas</h3>
               
-              <div className="space-y-6">
-                {messages.map(msg => (
-                  <div key={msg.id} className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-bold text-blaze-dark">{msg.author}</h4>
-                      <span className="text-xs text-gray-500">
-                        {new Intl.DateTimeFormat('pt-BR', {
-                          month: 'short',
-                          day: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        }).format(msg.timestamp)}
-                      </span>
-                    </div>
-                    
-                    <p className="text-gray-700 mb-3">{msg.message}</p>
-                    
-                    {msg.hasImage && msg.imageSrc && (
-                      <div className="mt-3">
-                        <img 
-                          src={msg.imageSrc} 
-                          alt="Shared memory" 
-                          className="rounded-md w-full object-cover h-48"
-                        />
+              {isLoading ? (
+                <div className="flex justify-center items-center h-64">
+                  <div className="animate-spin rounded-full h-12 w-12 border-4 border-blaze-blue border-t-transparent"></div>
+                </div>
+              ) : messages.length === 0 ? (
+                <div className="text-center py-12 text-gray-500">
+                  <MessageCircle className="h-12 w-12 mx-auto mb-4 opacity-30" />
+                  <p className="text-lg font-medium">Nenhuma mensagem ainda</p>
+                  <p>Seja o primeiro a deixar uma mensagem para o Hugo!</p>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {messages.map(msg => (
+                    <div key={msg.timestamp?.getTime()} className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className="font-bold text-blaze-dark">{msg.author}</h4>
+                        <span className="text-xs text-gray-500">
+                          {msg.timestamp && new Intl.DateTimeFormat('pt-BR', {
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          }).format(msg.timestamp)}
+                        </span>
                       </div>
-                    )}
-                  </div>
-                ))}
-              </div>
+                      
+                      <p className="text-gray-700 mb-3">{msg.message}</p>
+                      
+                      {msg.imageSrc && (
+                        <div className="mt-3">
+                          <img 
+                            src={msg.imageSrc} 
+                            alt="Memória compartilhada" 
+                            className="rounded-md w-full object-cover h-48"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
