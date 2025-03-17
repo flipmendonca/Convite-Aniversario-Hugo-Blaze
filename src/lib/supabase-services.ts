@@ -20,17 +20,28 @@ export const rsvpService = {
   // Adicionar nova confirmação
   async addRsvp(data: RsvpData): Promise<string> {
     try {
+      console.log('rsvpService.addRsvp - Dados recebidos:', data);
+      
+      const payload = {
+        name: data.name,
+        phone: data.phone,
+        number_of_guests: data.numberOfGuests,
+        message: data.message || null
+      };
+      
+      console.log('rsvpService.addRsvp - Payload para inserção:', payload);
+      
       const { data: insertedData, error } = await supabase
         .from('rsvps')
-        .insert({
-          name: data.name,
-          phone: data.phone,
-          number_of_guests: data.numberOfGuests,
-          message: data.message || null
-        })
+        .insert(payload)
         .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error('rsvpService.addRsvp - Erro do Supabase:', error);
+        throw error;
+      }
+      
+      console.log('rsvpService.addRsvp - Dados inseridos:', insertedData);
       
       return insertedData?.[0]?.id?.toString() || '';
     } catch (error) {

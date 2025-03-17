@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Calendar, Send, CheckCircle, XCircle } from 'lucide-react';
+import { Calendar, Send, CheckCircle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { rsvpService, RsvpData } from '@/lib/supabase-services';
 
 const RsvpForm = () => {
   const { toast } = useToast();
-  const [formState, setFormState] = useState({
+  const [formState, setFormState] = useState<RsvpData>({
     name: '',
     phone: '',
     numberOfGuests: 1,
@@ -15,16 +16,23 @@ const RsvpForm = () => {
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormState(prev => ({ ...prev, [name]: value }));
+    setFormState(prev => ({ 
+      ...prev, 
+      [name]: name === 'numberOfGuests' ? parseInt(value) : value 
+    }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Form submitted:', formState);
+    console.log('Enviando RSVP:', formState);
+    
+    try {
+      console.log('Chamando rsvpService.addRsvp...');
+      const id = await rsvpService.addRsvp(formState);
+      console.log('RSVP adicionado com sucesso, ID:', id);
+      
       setIsSubmitting(false);
       setIsSubmitted(true);
       
@@ -40,7 +48,16 @@ const RsvpForm = () => {
         numberOfGuests: 1,
         message: '',
       });
-    }, 1500);
+    } catch (error) {
+      console.error('Erro ao enviar confirmação:', error);
+      setIsSubmitting(false);
+      
+      toast({
+        title: "Erro ao enviar",
+        description: "Ocorreu um erro ao enviar sua confirmação. Tente novamente.",
+        variant: "destructive",
+      });
+    }
   };
   
   const openWhatsApp = () => {
