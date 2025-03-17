@@ -12,7 +12,6 @@ export interface RsvpData {
 export interface MessageData {
   author: string;
   message: string;
-  imageSrc?: string | null;
   timestamp?: Date;
 }
 
@@ -69,40 +68,13 @@ export const messageService = {
   // Adicionar nova mensagem
   async addMessage(data: MessageData): Promise<string> {
     try {
-      let imageUrl = null;
-      
-      // Se tiver imagem, fazer upload primeiro
-      if (data.imageSrc && data.imageSrc.startsWith('data:image')) {
-        const fileExt = data.imageSrc.split(';')[0].split('/')[1];
-        const fileName = `${Date.now()}.${fileExt}`;
-        const filePath = `message-images/${fileName}`;
-        
-        // Remover o prefixo data:image/xxx;base64, para obter apenas os dados
-        const base64Data = data.imageSrc.split(',')[1];
-        
-        const { error: uploadError } = await supabase.storage
-          .from('images')
-          .upload(filePath, Buffer.from(base64Data, 'base64'), {
-            contentType: `image/${fileExt}`
-          });
-          
-        if (uploadError) throw uploadError;
-        
-        // Obter a URL pública da imagem
-        const { data: publicUrlData } = supabase.storage
-          .from('images')
-          .getPublicUrl(filePath);
-          
-        imageUrl = publicUrlData.publicUrl;
-      }
-      
       // Adicionar documento ao Supabase
       const { data: insertedData, error } = await supabase
         .from('messages')
         .insert({
           author: data.author,
           message: data.message,
-          image_url: imageUrl
+          image_url: null
         })
         .select();
         
@@ -129,7 +101,6 @@ export const messageService = {
       return (data || []).map((row: MessageRow) => ({
         author: row.author,
         message: row.message,
-        imageSrc: row.image_url,
         timestamp: row.created_at ? new Date(row.created_at) : undefined
       }));
     } catch (error) {

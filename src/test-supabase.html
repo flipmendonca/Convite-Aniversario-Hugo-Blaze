@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste de Conexão Supabase</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 10px 5px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    #results {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      min-height: 200px;
+    }
+    .success {
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Teste de Conexão Supabase</h1>
+  
+  <div>
+    <button id="testConnection">Testar Conexão</button>
+    <button id="testAddRsvp">Testar Adicionar RSVP</button>
+    <button id="runAllTests">Executar Todos os Testes</button>
+  </div>
+  
+  <div id="results">
+    <p>Os resultados dos testes aparecerão aqui...</p>
+  </div>
+  
+  <script type="module">
+    import { testSupabaseConnection, testAddRsvp, runTests } from './test-supabase.ts';
+    
+    const resultsDiv = document.getElementById('results');
+    
+    // Função para adicionar mensagem ao div de resultados
+    function addResult(message, isError = false) {
+      const p = document.createElement('p');
+      p.textContent = message;
+      p.className = isError ? 'error' : 'success';
+      resultsDiv.appendChild(p);
+    }
+    
+    // Limpar resultados anteriores
+    function clearResults() {
+      resultsDiv.innerHTML = '';
+    }
+    
+    // Configurar os botões
+    document.getElementById('testConnection').addEventListener('click', async () => {
+      clearResults();
+      addResult('Testando conexão com o Supabase...');
+      
+      try {
+        const result = await testSupabaseConnection();
+        if (result) {
+          addResult('✅ Conexão com o Supabase estabelecida com sucesso!');
+        } else {
+          addResult('❌ Falha ao conectar com o Supabase', true);
+        }
+      } catch (error) {
+        addResult(`❌ Erro: ${error.message}`, true);
+      }
+    });
+    
+    document.getElementById('testAddRsvp').addEventListener('click', async () => {
+      clearResults();
+      addResult('Testando adição de RSVP...');
+      
+      try {
+        const result = await testAddRsvp();
+        if (result) {
+          addResult('✅ RSVP de teste adicionado com sucesso!');
+        } else {
+          addResult('❌ Falha ao adicionar RSVP de teste', true);
+        }
+      } catch (error) {
+        addResult(`❌ Erro: ${error.message}`, true);
+      }
+    });
+    
+    document.getElementById('runAllTests').addEventListener('click', async () => {
+      clearResults();
+      addResult('Executando todos os testes...');
+      
+      try {
+        await runTests();
+        addResult('✅ Testes concluídos!');
+      } catch (error) {
+        addResult(`❌ Erro: ${error.message}`, true);
+      }
+    });
+  </script>
+</body>
+</html> 

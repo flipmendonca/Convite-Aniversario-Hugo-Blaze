@@ -1,7 +1,17 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://oxtxmytcphwvtlzctjxm.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94dHhteXRjcGh3dnRsemN0anhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIxNzEwNjQsImV4cCI6MjA1Nzc0NzA2NH0.UFMAwDJh2Infa9YvI51G_0YO_f7reBU0ZW7E_4--MwU';
+// Tentar usar as variáveis do Vercel primeiro, depois as variáveis VITE, e por último os valores padrão
+const supabaseUrl = 
+  import.meta.env.NEXT_PUBLIC_SUPABASE_URL || 
+  import.meta.env.SUPABASE_URL || 
+  import.meta.env.VITE_SUPABASE_URL || 
+  'https://oxtxmytcphwvtlzctjxm.supabase.co';
+
+const supabaseAnonKey = 
+  import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 
+  import.meta.env.SUPABASE_ANON_KEY || 
+  import.meta.env.VITE_SUPABASE_ANON_KEY || 
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94dHhteXRjcGh3dnRsemN0anhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIxNzEwNjQsImV4cCI6MjA1Nzc0NzA2NH0.UFMAwDJh2Infa9YvI51G_0YO_f7reBU0ZW7E_4--MwU';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
