@@ -39,12 +39,6 @@ const NavBar = () => {
         
         <div className="flex space-x-6 items-center">
           <button 
-            onClick={() => scrollToSection('about')}
-            className="text-blaze-dark hover:text-blaze-red transition-colors font-medium hidden md:block"
-          >
-            Festa
-          </button>
-          <button 
             onClick={() => scrollToSection('location')}
             className="text-blaze-dark hover:text-blaze-red transition-colors font-medium hidden md:block"
           >

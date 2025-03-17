@@ -29,69 +29,6 @@ const Index = () => {
       <main>
         <Hero />
         
-        {/* Dobra de cor para a seção "about" */}
-        <div className="h-16 bg-gradient-to-r from-blaze-red/20 via-blaze-yellow/20 to-blaze-blue/20 transform -skew-y-2"></div>
-        
-        <section id="about" className="py-20 bg-white relative overflow-hidden">
-          <div className="absolute inset-0 moving-clouds opacity-20 pointer-events-none"></div>
-          
-          <div className="container mx-auto px-4 relative z-10">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold mb-4 text-blaze-dark">Venha comemorar com a gente!</h2>
-              <div className="h-1 w-20 bg-blaze-yellow mx-auto mb-6"></div>
-              <p className="text-lg text-blaze-dark/70 max-w-3xl mx-auto">
-                Traga sua energia para curtir com o Hugo e seus amigos monster trucks!
-              </p>
-            </div>
-            
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <div className="glass-card rounded-lg p-6 shadow-lg text-center animate-slide-up opacity-0" style={{ animationDelay: '0s' }}>
-                <div className="bg-blaze-red/10 p-3 rounded-full mx-auto mb-4 inline-block">
-                  <Calendar className="h-8 w-8 text-blaze-red" />
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-blaze-dark">Domingo, 13 de abril</h3>
-                <p className="text-blaze-dark/70">
-                  A partir das 15h, vamos celebrar o aniversário de 3 anos do Hugo!
-                </p>
-              </div>
-              
-              <div className="glass-card rounded-lg p-6 shadow-lg text-center animate-slide-up opacity-0" style={{ animationDelay: '0.1s' }}>
-                <div className="bg-blaze-blue/10 p-3 rounded-full mx-auto mb-4 inline-block">
-                  <MapPin className="h-8 w-8 text-blaze-blue" />
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-blaze-dark">Salão Infantil</h3>
-                <p className="text-blaze-dark/70">
-                  Condomínio Aquarela Carioca Clube<br />
-                  Rua do Bispo, 191 – Rio Comprido
-                </p>
-              </div>
-              
-              <div className="glass-card rounded-lg p-6 shadow-lg text-center animate-slide-up opacity-0" style={{ animationDelay: '0.2s' }}>
-                <div className="bg-blaze-yellow/10 p-3 rounded-full mx-auto mb-4 inline-block">
-                  <Truck className="h-8 w-8 text-blaze-yellow" />
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-blaze-dark">Tema da Festa</h3>
-                <p className="text-blaze-dark/70">
-                  Blaze e os Monster Machines, com muita diversão e aventuras para toda a criançada!
-                </p>
-              </div>
-            </div>
-            
-            <div className="text-center mt-16 animate-slide-up opacity-0" style={{ animationDelay: '0.3s' }}>
-              <p className="text-xl font-medium text-blaze-dark mb-8">
-                Confirme sua presença até o dia 10 de abril
-              </p>
-              
-              <a 
-                href="#rsvp" 
-                className="button-3d inline-block bg-blaze-red hover:bg-red-600 text-white font-bold rounded-full py-3 px-8 transition-all"
-              >
-                Confirmar agora
-              </a>
-            </div>
-          </div>
-        </section>
-        
         {/* Dobra de cor para a seção de memórias */}
         <div className="h-16 bg-gradient-to-r from-blaze-blue/20 via-blaze-yellow/20 to-blaze-red/20 transform skew-y-2"></div>
         
